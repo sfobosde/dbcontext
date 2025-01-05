@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"gitlab.com/dodo141120/dbcontext/dbcontext"
+	"github.com/sfobosde/dbcontext/dbcontext"
 )
 
 // Coverage StringFieldOperands methods.
