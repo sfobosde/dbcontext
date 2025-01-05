@@ -1,7 +1,7 @@
 package main
 
 import (
-	"gitlab.com/dodo141120/dbcontext/dbcontext"
+	"github.com/sfobosde/dbcontext/dbcontext"
 )
 
 func initModel() *model {

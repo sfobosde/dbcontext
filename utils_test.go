@@ -4,8 +4,8 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/sfobosde/dbcontext/dbcontext"
 	"github.com/stretchr/testify/assert"
-	"gitlab.com/dodo141120/dbcontext/dbcontext"
 )
 
 // Test connection properties arragning.

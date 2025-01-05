@@ -1,7 +1,7 @@
 package dbcontext_test
 
 import (
-	"gitlab.com/dodo141120/dbcontext/dbcontext"
+	"github.com/sfobosde/dbcontext/dbcontext"
 )
 
 // Queue of methods intended to clean data.

@@ -3,8 +3,8 @@ package main
 import (
 	"testing"
 
+	"github.com/sfobosde/dbcontext/dbcontext"
 	"github.com/stretchr/testify/assert"
-	"gitlab.com/dodo141120/dbcontext/dbcontext"
 )
 
 // Coverage where without panics.
