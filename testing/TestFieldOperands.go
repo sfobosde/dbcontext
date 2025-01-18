@@ -5,4 +5,5 @@ func testFieldOperands(models *model) {
 	testStringFieldOperands(models)
 	testDateTimeFieldOperands(models)
 	testBoolFieldOperands(models)
+	testObjectFieldsOperands(models)
 }

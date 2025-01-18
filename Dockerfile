@@ -1,5 +1,5 @@
 # Этап 1: Устанавливаем зависимости и компилируем приложение
-FROM golang:1.20.5 AS builder
+FROM golang:1.22 AS builder
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download

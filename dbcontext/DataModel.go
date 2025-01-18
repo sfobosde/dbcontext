@@ -47,3 +47,21 @@ func (d *DataModel[T, TSearchFields]) Save(entity *T) {
 func (d *DataModel[T, TSearchFields]) Delete(entity *T) {
 	getContextModel().db.Delete(entity)
 }
+
+// Get object by Id.
+func (d *DataModel[T, TSearchFields]) Fetch(id string) (*T, error) {
+	baseSearch := &BaseEntitySearch{Id: &StringFieldOperands{FieldValueOperandsParams: FieldValueOperandsParams{FieldName: "id"}}}
+
+	return d.Search().Where(func(operands *Operands, fields *TSearchFields) *GLobalFilter {
+		return operands.And(*baseSearch.Id.Equals(id))
+	}).First()
+}
+
+// Get objects by ids.
+func (d *DataModel[T, TSearchFields]) FetchAll(id []string) ([]T, error) {
+	baseSearch := &BaseEntitySearch{Id: &StringFieldOperands{FieldValueOperandsParams: FieldValueOperandsParams{FieldName: "id"}}}
+
+	return d.Search().Where(func(operands *Operands, fields *TSearchFields) *GLobalFilter {
+		return operands.And(*baseSearch.Id.In(id))
+	}).All()
+}
