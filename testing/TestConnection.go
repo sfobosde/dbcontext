@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/sfobosde/dbcontext/dbcontext"
+	"gorm.io/gorm/logger"
 )
 
 // Getting environment connection properties values.
@@ -22,7 +23,7 @@ func testConnect(properties *dbcontext.ConnectionProperties) {
 			panic("testConnect: " + fmt.Sprint(r))
 		}
 	}()
-	dbcontext.Connect(properties)
+	dbcontext.Connect(properties, logger.Info)
 	fmt.Println("Database connection open")
 }
 

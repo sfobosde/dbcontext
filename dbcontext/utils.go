@@ -59,3 +59,18 @@ func SetObjectProperty[TObject any](object *TObject, fieldName string, value str
 
 	return nil
 }
+
+func GetFieldValue(s interface{}, fieldName string) (interface{}, error) {
+	val := reflect.ValueOf(s)
+
+	if val.Kind() != reflect.Struct {
+		return nil, fmt.Errorf("expected struct, got %s", val.Kind())
+	}
+
+	field := val.FieldByName(fieldName)
+	if !field.IsValid() {
+		return nil, fmt.Errorf("field '%s' not found", fieldName)
+	}
+
+	return field.Interface(), nil
+}
