@@ -15,3 +15,8 @@ type BaseEntity struct {
 	// Last update date/time.
 	UpdatedAt time.Time `json:"updatedAt"`
 }
+
+// Base entity search fields.
+type BaseEntitySearch struct {
+	Id *StringFieldOperands `dbcontext:"Id"`
+}
