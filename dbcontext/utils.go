@@ -5,7 +5,7 @@ import (
 	"reflect"
 )
 
-// Получение строки подключения к БД.
+// Get db connection string.
 func GetConnectionConfig(properties *ConnectionProperties) string {
 	return fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=UTC",
@@ -17,13 +17,13 @@ func GetConnectionConfig(properties *ConnectionProperties) string {
 	)
 }
 
-// Получение тега поля.
+// Get field tag value.
 func GetFieldTag(field reflect.StructField, tagKey string) (string, bool) {
 	tag := field.Tag.Get(tagKey)
 	return tag, tag != ""
 }
 
-// Простановка кодов полям из SearchFields объекта.
+// Set SearchField object fields values by tag value.
 func SetFieldCodes[TSearch any](searchFields *TSearch) {
 	v := reflect.ValueOf(searchFields)
 	if v.Kind() == reflect.Ptr {
@@ -46,7 +46,7 @@ func SetFieldCodes[TSearch any](searchFields *TSearch) {
 	}
 }
 
-// Установка значению полю по указанному коду у переданного объекта.
+// Set object property value by field code.
 func SetObjectProperty[TObject any](object *TObject, fieldName string, value string) error {
 	v := reflect.ValueOf(object).Elem()
 	f := v.FieldByName(fieldName)
@@ -60,6 +60,7 @@ func SetObjectProperty[TObject any](object *TObject, fieldName string, value str
 	return nil
 }
 
+// Get object property value by field code.
 func GetFieldValue(s interface{}, fieldName string) (interface{}, error) {
 	val := reflect.ValueOf(s)
 
