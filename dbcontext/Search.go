@@ -8,6 +8,7 @@ func InitSearch[TReturn any, TSearchFields any]() func() *Search[TReturn, TSearc
 	return func() *Search[TReturn, TSearchFields] {
 		search := new(Search[TReturn, TSearchFields])
 		search.size = 10
+		search.offset = 0
 
 		search.globalOperands = &Operands{}
 
@@ -28,6 +29,9 @@ type Search[TReturn any, TSearchFields any] struct {
 	// Limit response.
 	size int
 
+	// Offset response.
+	offset int
+
 	// Operands.
 	globalOperands *Operands
 
@@ -42,6 +46,9 @@ type ISearch[T interface{}, TReturnEntity interface{}] interface {
 
 	// Set querry limit. Default: 10.
 	Size(count int) *Search[T, TReturnEntity]
+
+	// Set querry offset. Default: 0.
+	Offset(offset int) *Search[T, TReturnEntity]
 
 	// Get all rows. (Limit by size, default 10)
 	All() []TReturnEntity
@@ -62,6 +69,12 @@ func (sb *Search[T, TSearchFields]) Size(count int) *Search[T, TSearchFields] {
 	return sb
 }
 
+// Set querry offset. Default: 0.
+func (sb *Search[T, TSearchFields]) Offset(offset int) *Search[T, TSearchFields] {
+	sb.offset = offset
+	return sb
+}
+
 // Get all rows. (Limit by size, default 10)
 func (sb *Search[TReturn, TSearchFields]) All() ([]TReturn, error) {
 	var err error
@@ -70,7 +83,7 @@ func (sb *Search[TReturn, TSearchFields]) All() ([]TReturn, error) {
 	db, err := sb.arrangeFilters()
 
 	if err == nil {
-		db.Limit(sb.size).Find(&entities)
+		db.Offset(sb.offset).Limit(sb.size).Find(&entities)
 	}
 
 	return entities, err
