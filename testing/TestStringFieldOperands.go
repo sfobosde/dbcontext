@@ -31,7 +31,7 @@ func testStringEquals(models *model) {
 		panic("testStringEquals: Expected value, actual nil")
 	}
 
-	if searchUser.Id != user.Id {
+	if searchUser.ID != user.ID {
 		panic("testStringEquals: fetched object id doesnt matches")
 	}
 }
@@ -46,11 +46,11 @@ func testIn(models *model) {
 		user := create(models.Users)
 		user.Name = "testIn"
 		models.Users.Save(user)
-		userIds = append(userIds, user.Id)
+		userIds = append(userIds, user.ID)
 	}
 
 	fetchedUsers, err := models.Users.Search().Where(func(operands *dbcontext.Operands, fields *userSearch) *dbcontext.GLobalFilter {
-		return operands.And(*fields.Id.In(userIds))
+		return operands.And(*fields.ID.In(userIds))
 	}).All()
 
 	if err != nil {
@@ -64,12 +64,12 @@ func testIn(models *model) {
 	}
 
 	for _, fetchedUser := range fetchedUsers {
-		if !some(userIds, func(value string) bool { return value == fetchedUser.Id }) {
-			panic("testIn: Id not found in fetched: " + fetchedUser.Id)
+		if !some(userIds, func(value string) bool { return value == fetchedUser.ID }) {
+			panic("testIn: ID not found in fetched: " + fetchedUser.ID)
 		}
 	}
 
-	fetchedIds := mapArr(fetchedUsers, func(value user) string { return value.Id })
+	fetchedIds := mapArr(fetchedUsers, func(value user) string { return value.ID })
 	for _, id := range userIds {
 		if !some(fetchedIds, func(value string) bool { return value == id }) {
 			panic("testIn: id not found in existed: " + id)
@@ -102,11 +102,11 @@ func testLike(models *model) {
 		panic("testL1ke: expected 1 object in response, actual: " + fmt.Sprint(len(users)))
 	}
 
-	if !some(users, func(value user) bool { return value.Id == matchedUser.Id }) {
+	if !some(users, func(value user) bool { return value.ID == matchedUser.ID }) {
 		panic("testL1ke: expected value in list, actual: none ")
 	}
 
-	if some(users, func(value user) bool { return value.Id == anotherUser.Id }) {
+	if some(users, func(value user) bool { return value.ID == anotherUser.ID }) {
 		panic("testL1ke: extra object in response.")
 	}
 }

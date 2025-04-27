@@ -21,8 +21,8 @@ func testLink(models *model) {
 	models.Groups.Save(group)
 
 	userGroupMember := create(models.UserGroup)
-	userGroupMember.UserId = user.Id
-	userGroupMember.GroupId = group.Id
+	userGroupMember.UserId = user.ID
+	userGroupMember.GroupId = group.ID
 	models.UserGroup.Save(userGroupMember)
 
 	fetchedUserGroup, err := models.UserGroup.Search().Where(func(operands *dbcontext.Operands, fields *userGroupSearch) *dbcontext.GLobalFilter {
@@ -33,7 +33,7 @@ func testLink(models *model) {
 		panic("testLink: " + fmt.Sprint(err))
 	}
 
-	if !some(fetchedUserGroup, func(value userGroup) bool { return value.Id == userGroupMember.Id }) {
+	if !some(fetchedUserGroup, func(value userGroup) bool { return value.ID == userGroupMember.ID }) {
 		panic("testLink: cannot find required linked object")
 	}
 }

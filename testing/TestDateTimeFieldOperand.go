@@ -23,7 +23,7 @@ func testDateTimeEquals(models *model) {
 	models.Users.Save(user)
 
 	user, err := models.Users.Search().Where(func(operands *dbcontext.Operands, fields *userSearch) *dbcontext.GLobalFilter {
-		return fields.Id.Equals(user.Id)
+		return fields.ID.Equals(user.ID)
 	}).First()
 
 	if err != nil {
@@ -42,7 +42,7 @@ func testDateTimeEquals(models *model) {
 		panic("testDateTimeEquals user by time in nil")
 	}
 
-	if userByTime.Id != user.Id {
+	if userByTime.ID != user.ID {
 		panic("testDateTimeEquals users are not equals")
 	}
 }
@@ -65,7 +65,7 @@ func testDateTimeAfter(models *model) {
 		panic("testDateTimeAfter: user by id" + fmt.Sprint(err))
 	}
 
-	if userByTime.Id != user.Id {
+	if userByTime.ID != user.ID {
 		panic("testDateTimeAfter users are not equals")
 	}
 }
@@ -88,7 +88,7 @@ func testDateTimeBefore(models *model) {
 		panic("testDateTimeBefore: user by id" + fmt.Sprint(err))
 	}
 
-	if !some(userByTime, func(value user) bool { return value.Id == us.Id }) {
+	if !some(userByTime, func(value user) bool { return value.ID == us.ID }) {
 		panic("testDateTimeBefore users are not equals (no such user in response)")
 	}
 }

@@ -31,7 +31,7 @@ func testCreateSearch(models *model) {
 		panic("testCreateSearch: Ошибка при поиске First.")
 	}
 
-	if searchUser.Id != user.Id {
+	if searchUser.ID != user.ID {
 		panic("testCreateSearch: Не совпадают id")
 	}
 }
@@ -123,13 +123,13 @@ func testUpdate(models *model) {
 	user := create(models.Users)
 	user.Name = "testUpdate"
 	models.Users.Save(user)
-	userId := user.Id
+	userId := user.ID
 
 	user.Name = "testUpdateName"
 	models.Users.Save(user)
 
 	fetchedUser, err := models.Users.Search().Where(func(operands *dbcontext.Operands, fields *userSearch) *dbcontext.GLobalFilter {
-		return operands.And(*fields.Id.Equals(userId))
+		return operands.And(*fields.ID.Equals(userId))
 	}).First()
 
 	if err != nil {

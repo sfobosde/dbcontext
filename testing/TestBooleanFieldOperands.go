@@ -26,20 +26,26 @@ func testBoolEqualsTrue(models *model) {
 	userMale.Male = &male
 	models.Users.Save(userMale)
 
-	searchUser, err := models.Users.Search().Where(func(operands *dbcontext.Operands, fields *userSearch) *dbcontext.GLobalFilter {
+	searchUsers, err := models.Users.Search().Where(func(operands *dbcontext.Operands, fields *userSearch) *dbcontext.GLobalFilter {
 		return operands.And(*fields.Male.Equals(true))
-	}).First()
+	}).All()
 
 	if err != nil {
 		panic("testBoolEqualsTrue" + fmt.Sprint(err))
 	}
 
-	if searchUser == nil {
-		panic("testBoolEqualsTrue: Expected value, actual nil")
+	if len(searchUsers) == 0 {
+		panic("testBoolEqualsTrue: Expected value, actual 0")
 	}
 
-	if searchUser.Id != userMale.Id {
-		panic("testBoolEqualsTrue: fetched object id doesnt matches")
+	found := false
+	for _, searchedUser := range searchUsers {
+		if searchedUser.ID != userMale.ID {
+			found = true
+		}
+	}
+	if !found {
+		panic("testBoolEqualsTrue: fetched object not found:" + userMale.ID)
 	}
 }
 
@@ -52,7 +58,7 @@ func testBoolEqualsFalse(models *model) {
 	models.Users.Save(userMale)
 
 	searchUser, err := models.Users.Search().Where(func(operands *dbcontext.Operands, fields *userSearch) *dbcontext.GLobalFilter {
-		return operands.And(*fields.Male.Equals(false), *fields.Id.Equals(userMale.Id))
+		return operands.And(*fields.Male.Equals(false), *fields.ID.Equals(userMale.ID))
 	}).First()
 
 	if err != nil {
@@ -63,7 +69,7 @@ func testBoolEqualsFalse(models *model) {
 		panic("testBoolEqualsFalse: Expected value, actual nil")
 	}
 
-	if searchUser.Id != userMale.Id {
+	if searchUser.ID != userMale.ID {
 		panic("testBoolEqualsFalse: fetched object id doesnt matches. Actual:" + fmt.Sprint(searchUser))
 	}
 }
@@ -93,11 +99,11 @@ func testBoolEqualsNull(models *model) {
 		panic("testBoolEqualsOrNull: Expected value, actual nil. Res: " + fmt.Sprint(searchUsers))
 	}
 
-	if !some(searchUsers, func(value user) bool { return value.Id == userEmpty.Id }) {
+	if !some(searchUsers, func(value user) bool { return value.ID == userEmpty.ID }) {
 		panic("testBoolEqualsOrNull: expected value in list, actual: none (userEmpty)")
 	}
 
-	if !some(searchUsers, func(value user) bool { return value.Id == userMale.Id }) {
+	if !some(searchUsers, func(value user) bool { return value.ID == userMale.ID }) {
 		panic("testBoolEqualsOrNull: expected value in list, actual: none (userMale)")
 	}
 }

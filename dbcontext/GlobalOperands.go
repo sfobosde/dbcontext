@@ -1,6 +1,9 @@
 package dbcontext
 
 import (
+	"fmt"
+	"strings"
+
 	"gorm.io/gorm"
 )
 
@@ -55,9 +58,11 @@ func (glb *Operands) Not(filters ...GLobalFilter) *GLobalFilter {
 
 // Filter structure.
 type GLobalFilter struct {
-	operand     string
-	fieldFilter []FieldFilter
-	filters     []GLobalFilter
+	operand      string
+	fieldFilter  []FieldFilter
+	filters      []GLobalFilter
+	relationName string
+	joinParams   string
 }
 
 // Arragning inner filters.
@@ -68,25 +73,32 @@ func (gf *GLobalFilter) arrangeFilters(db *gorm.DB) (*gorm.DB, error) {
 	if len(gf.fieldFilter) > 0 {
 		fieldFilterExpression, fieldFilterValues = gf.arrangeFieldFilters()
 
-		db = userFilter(db, gf.operand, fieldFilterExpression, fieldFilterValues)
+		db = userFilter(db, gf, fieldFilterExpression, fieldFilterValues)
 	}
 
 	for _, filter := range gf.filters {
 		fieldFilterExpression, fieldFilterValues = filter.arrangeGlobalFilters()
-		db = userFilter(db, gf.operand, fieldFilterExpression, fieldFilterValues)
+		db = userFilter(db, gf, fieldFilterExpression, fieldFilterValues)
 	}
 
 	return db, nil
 }
 
 // Add filter queery chain.
-func userFilter(db *gorm.DB, operand string, fieldFilterExpression string, fieldFilterValues []interface{}) *gorm.DB {
-	if operand == "AND" {
+func userFilter(db *gorm.DB, gf *GLobalFilter, fieldFilterExpression string, fieldFilterValues []interface{}) *gorm.DB {
+	if gf.operand == "AND" {
 		db = db.Where(fieldFilterExpression, fieldFilterValues...)
-	} else if operand == "OR" {
+	} else if gf.operand == "OR" {
 		db = db.Or(fieldFilterExpression, fieldFilterValues...)
-	} else if operand == "NOT" {
+	} else if gf.operand == "NOT" {
 		db = db.Not(fieldFilterExpression, fieldFilterValues...)
+	} else if gf.operand == "JOIN" {
+		params := strings.Split(gf.joinParams, ",")
+
+		db = db.
+			Joins(fmt.Sprintf("JOIN %s ON %s.%s = %s", params[0], params[0], params[1], params[3])).
+			Joins(fmt.Sprintf("JOIN roles ON %s = %s.%s", params[4], params[0], params[2])).
+			Where(fieldFilterExpression, fieldFilterValues...)
 	}
 
 	return db

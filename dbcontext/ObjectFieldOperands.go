@@ -7,7 +7,7 @@ type ObjectFieldOperands[TModel any] struct {
 func (s *ObjectFieldOperands[TModel]) Link(values ...*TModel) *GLobalFilter {
 	var ids []any
 	for _, value := range values {
-		id, _ := GetFieldValue(*value, "Id")
+		id, _ := GetFieldValue(*value, "ID")
 		ids = append(ids, id)
 	}
 

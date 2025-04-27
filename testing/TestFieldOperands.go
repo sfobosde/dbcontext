@@ -6,4 +6,5 @@ func testFieldOperands(models *model) {
 	testDateTimeFieldOperands(models)
 	testBoolFieldOperands(models)
 	testObjectFieldsOperands(models)
+	testLinkedObjectFieldOperands(models)
 }
