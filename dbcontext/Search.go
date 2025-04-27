@@ -69,6 +69,8 @@ func (sb *Search[TReturn, TSearchFields]) All() ([]TReturn, error) {
 
 	db, err := sb.arrangeFilters()
 
+	WithPreloads[TReturn](db)
+
 	if err == nil {
 		db.Limit(sb.size).Find(&entities)
 	}
@@ -82,6 +84,8 @@ func (sb *Search[TReturn, TSearchFields]) First() (*TReturn, error) {
 	var entity *TReturn
 
 	db, err := sb.arrangeFilters()
+
+	WithPreloads[TReturn](db)
 
 	if err == nil {
 		result := db.First(&entity)

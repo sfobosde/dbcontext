@@ -3,6 +3,9 @@ package dbcontext
 import (
 	"fmt"
 	"reflect"
+	"strings"
+
+	"gorm.io/gorm"
 )
 
 // Get db connection string.
@@ -32,15 +35,24 @@ func SetFieldCodes[TSearch any](searchFields *TSearch) {
 	t := v.Type()
 	for i := 0; i < v.NumField(); i++ {
 		field := t.Field(i)
+
+		// Setting values from dbcontext tag
 		tag, ok := GetFieldTag(field, "dbcontext")
 		if ok {
+			parts := strings.Split(tag, ":")
+
 			operand := reflect.New(field.Type.Elem()).Interface()
 			v.Field(i).Set(reflect.ValueOf(operand))
 			operandValue := reflect.ValueOf(operand).Elem()
-			fieldCodeField := operandValue.FieldByName("FieldName")
+			FieldName := operandValue.FieldByName("FieldName")
 
-			if fieldCodeField.IsValid() {
-				fieldCodeField.SetString(tag)
+			if FieldName.IsValid() {
+				FieldName.SetString(parts[0])
+			}
+
+			JoinParams := operandValue.FieldByName("JoinParams")
+			if JoinParams.IsValid() {
+				JoinParams.SetString(parts[1])
 			}
 		}
 	}
@@ -74,4 +86,34 @@ func GetFieldValue(s interface{}, fieldName string) (interface{}, error) {
 	}
 
 	return field.Interface(), nil
+}
+
+// Формирование запроса на внешние связи.
+func WithPreloads[TOut interface{}](db *gorm.DB) error {
+	out := new(TOut)
+	valueOf := reflect.ValueOf(out)
+	if valueOf.Kind() != reflect.Ptr {
+		return fmt.Errorf("out must be a pointer to a struct")
+	}
+
+	valueOf = valueOf.Elem()
+	typeOf := valueOf.Type()
+
+	for i := 0; i < typeOf.NumField(); i++ {
+		field := typeOf.Field(i)
+		if _, ok := field.Tag.Lookup("gorm"); ok {
+			gormTag := field.Tag.Get("gorm")
+			if gormTagContains(gormTag, "many2many:") {
+				db = db.Preload(field.Name)
+			}
+		}
+	}
+	return nil
+}
+
+// Функция для проверки наличия подстроки в gorm теге
+func gormTagContains(tag string, sub string) bool {
+	return reflect.ValueOf(tag).String() != "" &&
+		(reflect.ValueOf(sub).String() != "" &&
+			(reflect.ValueOf(tag).String()[0:len(reflect.ValueOf(sub).String())] == reflect.ValueOf(sub).String()))
 }

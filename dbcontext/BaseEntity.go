@@ -1,8 +1,6 @@
 package dbcontext
 
-import (
-	"time"
-)
+import "time"
 
 // Base Entity describe with common fields: Id, CreatedAt, UpdatedAt.
 type BaseEntity struct {

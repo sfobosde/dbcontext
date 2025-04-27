@@ -61,7 +61,7 @@ func TestSetObjectProperty(t *testing.T) {
 
 	user := new(user)
 
-	userId := "IT IS USER ID"
+	userId := "IT IS USER Id"
 
 	err := dbcontext.SetObjectProperty(user, "Id", userId)
 

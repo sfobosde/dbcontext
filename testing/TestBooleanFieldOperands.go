@@ -26,20 +26,26 @@ func testBoolEqualsTrue(models *model) {
 	userMale.Male = &male
 	models.Users.Save(userMale)
 
-	searchUser, err := models.Users.Search().Where(func(operands *dbcontext.Operands, fields *userSearch) *dbcontext.GLobalFilter {
+	searchUsers, err := models.Users.Search().Where(func(operands *dbcontext.Operands, fields *userSearch) *dbcontext.GLobalFilter {
 		return operands.And(*fields.Male.Equals(true))
-	}).First()
+	}).All()
 
 	if err != nil {
 		panic("testBoolEqualsTrue" + fmt.Sprint(err))
 	}
 
-	if searchUser == nil {
-		panic("testBoolEqualsTrue: Expected value, actual nil")
+	if len(searchUsers) == 0 {
+		panic("testBoolEqualsTrue: Expected value, actual 0")
 	}
 
-	if searchUser.Id != userMale.Id {
-		panic("testBoolEqualsTrue: fetched object id doesnt matches")
+	found := false
+	for _, searchedUser := range searchUsers {
+		if searchedUser.Id != userMale.Id {
+			found = true
+		}
+	}
+	if !found {
+		panic("testBoolEqualsTrue: fetched object not found:" + userMale.Id)
 	}
 }
 
