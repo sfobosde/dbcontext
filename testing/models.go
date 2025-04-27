@@ -35,9 +35,8 @@ type user struct {
 
 type role struct {
 	dbcontext.BaseEntity
-	Name string `json:"name"`
-	// Users []user `json:"users, omitempty" gorm:"many2many:user_roles;joinForeignKey:RoleID;joinReferences:UserID"`
-	Users []user `gorm:"many2many:user_roles;foreignKey:Id;joinForeignKey:RoleID;references:Id;joinReferences:UserID"`
+	Name  string `json:"name"`
+	Users []user `gorm:"many2many:user_roles;"`
 }
 
 type roleSearch struct {
@@ -45,12 +44,12 @@ type roleSearch struct {
 }
 
 type userSearch struct {
-	Id        *dbcontext.StringFieldOperands                         `dbcontext:"Id"`
-	Login     *dbcontext.StringFieldOperands                         `dbcontext:"Login"`
-	Name      *dbcontext.StringFieldOperands                         `dbcontext:"name"`
-	CreatedAt *dbcontext.DateTimeFieldOperands                       `dbcontext:"created_at"`
-	Male      *dbcontext.BooleanFieldOperands                        `dbcontext:"male"`
-	Roles     *dbcontext.LinkedObjectFieldOperands[role, roleSearch] `dbcontext:"Roles:user_roles,user_id,role_id,users.id,roles.id"`
+	Id        *dbcontext.StringFieldOperands       `dbcontext:"Id"`
+	Login     *dbcontext.StringFieldOperands       `dbcontext:"Login"`
+	Name      *dbcontext.StringFieldOperands       `dbcontext:"name"`
+	CreatedAt *dbcontext.DateTimeFieldOperands     `dbcontext:"created_at"`
+	Male      *dbcontext.BooleanFieldOperands      `dbcontext:"male"`
+	Roles     *dbcontext.LinkedObjectFieldOperands `dbcontext:"Roles:user_roles,user_id,role_id,users.id,roles.id"`
 }
 
 type userGroup struct {
