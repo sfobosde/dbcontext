@@ -11,7 +11,7 @@ func (s *LinkedObjectFieldOperands[TModel, TSearchFields]) Has(values ...TModel)
 	valuesIds := make([]string, len(values))
 
 	for i, value := range values {
-		id, _ := GetFieldValue(value, "ID")
+		id, _ := GetFieldValue(value, "Id")
 		valuesIds[i] = fmt.Sprint(id)
 	}
 

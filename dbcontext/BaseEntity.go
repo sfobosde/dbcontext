@@ -2,10 +2,10 @@ package dbcontext
 
 import "time"
 
-// Base Entity describe with common fields: ID, CreatedAt, UpdatedAt.
+// Base Entity describe with common fields: Id, CreatedAt, UpdatedAt.
 type BaseEntity struct {
-	// Entity ID.
-	ID string `gorm:"primaryKey" json:"id"`
+	// Entity Id.
+	Id string `gorm:"primaryKey" json:"id"`
 
 	// Create date/time.
 	CreatedAt time.Time `json:"createdAt"`
@@ -16,5 +16,5 @@ type BaseEntity struct {
 
 // Base entity search fields.
 type BaseEntitySearch struct {
-	ID *StringFieldOperands `dbcontext:"ID"`
+	Id *StringFieldOperands `dbcontext:"Id"`
 }

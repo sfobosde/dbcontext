@@ -25,7 +25,7 @@ type user struct {
 }
 
 type userSearch struct {
-	ID    *dbcontext.StringFieldOperands `dbcontext:"ID"`
+	Id    *dbcontext.StringFieldOperands `dbcontext:"Id"`
 	Login *dbcontext.StringFieldOperands `dbcontext:"Login"`
 	Name  *dbcontext.StringFieldOperands `dbcontext:"name"`
 }
@@ -37,6 +37,6 @@ type permission struct {
 }
 
 type permissionSearch struct {
-	ID          *dbcontext.StringFieldOperands `dbcontext:"ID"`
+	Id          *dbcontext.StringFieldOperands `dbcontext:"Id"`
 	Description *dbcontext.StringFieldOperands `dbcontext:"Description"`
 }

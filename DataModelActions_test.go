@@ -18,7 +18,7 @@ func TestWhere(t *testing.T) {
 	assert.NotPanics(func() {
 		model.Users.Search().Where(func(operands *dbcontext.Operands, fields *userSearch) *dbcontext.GLobalFilter {
 
-			return operands.And(*fields.ID.Equals("123"))
+			return operands.And(*fields.Id.Equals("123"))
 		})
 	})
 }
@@ -33,6 +33,6 @@ func TestEntityCreate(t *testing.T) {
 		user := model.Users.Create()
 
 		assert.NotNil(user)
-		assert.NotNil(user.ID)
+		assert.NotNil(user.Id)
 	})
 }

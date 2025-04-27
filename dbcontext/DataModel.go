@@ -33,7 +33,7 @@ func InitCreate[T any]() func() *T {
 		entity := new(T)
 		id, _ := uuid.NewV4()
 
-		SetObjectProperty(entity, "ID", id.String())
+		SetObjectProperty(entity, "Id", id.String())
 		return entity
 	}
 }
@@ -48,20 +48,20 @@ func (d *DataModel[T, TSearchFields]) Delete(entity *T) {
 	getContextModel().db.Delete(entity)
 }
 
-// Get object by ID.
+// Get object by Id.
 func (d *DataModel[T, TSearchFields]) Fetch(id string) (*T, error) {
-	baseSearch := &BaseEntitySearch{ID: &StringFieldOperands{FieldValueOperandsParams: FieldValueOperandsParams{FieldName: "id"}}}
+	baseSearch := &BaseEntitySearch{Id: &StringFieldOperands{FieldValueOperandsParams: FieldValueOperandsParams{FieldName: "id"}}}
 
 	return d.Search().Where(func(operands *Operands, fields *TSearchFields) *GLobalFilter {
-		return operands.And(*baseSearch.ID.Equals(id))
+		return operands.And(*baseSearch.Id.Equals(id))
 	}).First()
 }
 
 // Get objects by ids.
 func (d *DataModel[T, TSearchFields]) FetchAll(id []string) ([]T, error) {
-	baseSearch := &BaseEntitySearch{ID: &StringFieldOperands{FieldValueOperandsParams: FieldValueOperandsParams{FieldName: "id"}}}
+	baseSearch := &BaseEntitySearch{Id: &StringFieldOperands{FieldValueOperandsParams: FieldValueOperandsParams{FieldName: "id"}}}
 
 	return d.Search().Where(func(operands *Operands, fields *TSearchFields) *GLobalFilter {
-		return operands.And(*baseSearch.ID.In(id))
+		return operands.And(*baseSearch.Id.In(id))
 	}).All()
 }

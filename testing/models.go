@@ -30,14 +30,14 @@ type user struct {
 	Male *bool  `json:"male" gorm:"default:null`
 
 	// Roles []role `json:"roles, omitempty" gorm:"many2many:user_roles;joinForeignKey:UserID;joinReferences:RoleID"`
-	Roles []role `gorm:"many2many:user_roles;foreignKey:ID;joinForeignKey:UserID;references:ID;joinReferences:RoleID"`
+	Roles []role `gorm:"many2many:user_roles;foreignKey:Id;joinForeignKey:UserID;references:Id;joinReferences:RoleID"`
 }
 
 type role struct {
 	dbcontext.BaseEntity
 	Name string `json:"name"`
 	// Users []user `json:"users, omitempty" gorm:"many2many:user_roles;joinForeignKey:RoleID;joinReferences:UserID"`
-	Users []user `gorm:"many2many:user_roles;foreignKey:ID;joinForeignKey:RoleID;references:ID;joinReferences:UserID"`
+	Users []user `gorm:"many2many:user_roles;foreignKey:Id;joinForeignKey:RoleID;references:Id;joinReferences:UserID"`
 }
 
 type roleSearch struct {
@@ -45,7 +45,7 @@ type roleSearch struct {
 }
 
 type userSearch struct {
-	ID        *dbcontext.StringFieldOperands                         `dbcontext:"ID"`
+	Id        *dbcontext.StringFieldOperands                         `dbcontext:"Id"`
 	Login     *dbcontext.StringFieldOperands                         `dbcontext:"Login"`
 	Name      *dbcontext.StringFieldOperands                         `dbcontext:"name"`
 	CreatedAt *dbcontext.DateTimeFieldOperands                       `dbcontext:"created_at"`

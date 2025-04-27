@@ -27,7 +27,7 @@ func testOnCreateWithObjectField(models *model) {
 
 	models.Users.Save(userWithRole)
 
-	fetchedRole, err := models.Roles.Fetch(userRole.ID)
+	fetchedRole, err := models.Roles.Fetch(userRole.Id)
 
 	if err != nil {
 		panic("testLinkedObjectFieldOperands error in fetchind role")
@@ -37,20 +37,20 @@ func testOnCreateWithObjectField(models *model) {
 		panic("testLinkedObjectFieldOperands role not found")
 	}
 
-	fetchedUser, err := models.Users.Fetch(userWithRole.ID)
+	fetchedUser, err := models.Users.Fetch(userWithRole.Id)
 
 	if err != nil {
 		panic("testLinkedObjectFieldOperands error in fetchind user")
 	}
 
 	if fetchedUser == nil {
-		panic("testLinkedObjectFieldOperands user not found: " + userWithRole.ID)
+		panic("testLinkedObjectFieldOperands user not found: " + userWithRole.Id)
 	}
 
 	roleFound := false
 
 	for _, role := range fetchedUser.Roles {
-		if role.ID == userRole.ID {
+		if role.Id == userRole.Id {
 			roleFound = true
 		}
 	}
@@ -77,7 +77,7 @@ func testOnCreateWithObjectField(models *model) {
 	userByFoleFound := false
 
 	for _, user := range userByRole {
-		if user.ID == userWithRole.ID {
+		if user.Id == userWithRole.Id {
 			userByFoleFound = true
 			fmt.Println("testLinkedObjectFieldOperands")
 			fmt.Println(user)

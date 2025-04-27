@@ -30,7 +30,7 @@ func TestGetConnectionConfig(t *testing.T) {
 func TestGetFieldTag(test *testing.T) {
 	assert := assert.New(test)
 
-	userSearch := userSearch{ID: &dbcontext.StringFieldOperands{}}
+	userSearch := userSearch{Id: &dbcontext.StringFieldOperands{}}
 
 	// v := reflect.ValueOf(userSearch)
 	t := reflect.TypeOf(userSearch)
@@ -39,19 +39,19 @@ func TestGetFieldTag(test *testing.T) {
 
 	tagValue, hasTag := dbcontext.GetFieldTag(field, "dbcontext")
 	assert.True(hasTag)
-	assert.Equal("ID", tagValue, "Coverage get field tag value.")
+	assert.Equal("Id", tagValue, "Coverage get field tag value.")
 }
 
 // Coverage setting field code name from tag value.
 func TestSetFieldCodes(test *testing.T) {
 	assert := assert.New(test)
 
-	userSearch := &userSearch{ID: &dbcontext.StringFieldOperands{}, Login: &dbcontext.StringFieldOperands{}}
+	userSearch := &userSearch{Id: &dbcontext.StringFieldOperands{}, Login: &dbcontext.StringFieldOperands{}}
 
 	assert.NotPanics(func() {
 		dbcontext.SetFieldCodes(userSearch)
 	})
-	assert.Equal("ID", userSearch.ID.FieldName, "Check id field filled by metadata.")
+	assert.Equal("Id", userSearch.Id.FieldName, "Check id field filled by metadata.")
 	assert.Equal("Login", userSearch.Login.FieldName, "Check login field filled by metadata.")
 }
 
@@ -61,12 +61,12 @@ func TestSetObjectProperty(t *testing.T) {
 
 	user := new(user)
 
-	userId := "IT IS USER ID"
+	userId := "IT IS USER Id"
 
-	err := dbcontext.SetObjectProperty(user, "ID", userId)
+	err := dbcontext.SetObjectProperty(user, "Id", userId)
 
 	assert.Nil(err)
-	assert.Equal(userId, user.ID, "Coverage setting object proprties by value.")
+	assert.Equal(userId, user.Id, "Coverage setting object proprties by value.")
 }
 
 // Coverage get object property value my name.
@@ -75,9 +75,9 @@ func TestGetFieldValue(t *testing.T) {
 
 	assert.NotPanics(func() {
 		user := new(user)
-		user.ID = "r435t345t34"
+		user.Id = "r435t345t34"
 
-		userId, err := dbcontext.GetFieldValue(*user, "ID")
+		userId, err := dbcontext.GetFieldValue(*user, "Id")
 
 		assert.Nil(err, "Check exsited field")
 		assert.Equal(userId, "r435t345t34")
@@ -90,12 +90,12 @@ func TestGetFieldValueIterable(t *testing.T) {
 
 	assert.NotPanics(func() {
 		firstUser := new(user)
-		firstUser.ID = "r435t345t34"
+		firstUser.Id = "r435t345t34"
 
 		secondUser := new(user)
-		secondUser.ID = "r32rrgergg"
+		secondUser.Id = "r32rrgergg"
 
-		userIds := []string{firstUser.ID, secondUser.ID}
+		userIds := []string{firstUser.Id, secondUser.Id}
 
 		ids := arrFunc(secondUser, firstUser)
 
@@ -118,7 +118,7 @@ func TestGetFieldValueIterable(t *testing.T) {
 func arrFunc[T any](values ...*T) []any {
 	var ids []any
 	for _, value := range values {
-		id, err := dbcontext.GetFieldValue(*value, "ID")
+		id, err := dbcontext.GetFieldValue(*value, "Id")
 		fmt.Println(err)
 		fmt.Println(value, id)
 		ids = append(ids, id)

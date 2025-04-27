@@ -40,12 +40,12 @@ func testBoolEqualsTrue(models *model) {
 
 	found := false
 	for _, searchedUser := range searchUsers {
-		if searchedUser.ID != userMale.ID {
+		if searchedUser.Id != userMale.Id {
 			found = true
 		}
 	}
 	if !found {
-		panic("testBoolEqualsTrue: fetched object not found:" + userMale.ID)
+		panic("testBoolEqualsTrue: fetched object not found:" + userMale.Id)
 	}
 }
 
@@ -58,7 +58,7 @@ func testBoolEqualsFalse(models *model) {
 	models.Users.Save(userMale)
 
 	searchUser, err := models.Users.Search().Where(func(operands *dbcontext.Operands, fields *userSearch) *dbcontext.GLobalFilter {
-		return operands.And(*fields.Male.Equals(false), *fields.ID.Equals(userMale.ID))
+		return operands.And(*fields.Male.Equals(false), *fields.Id.Equals(userMale.Id))
 	}).First()
 
 	if err != nil {
@@ -69,7 +69,7 @@ func testBoolEqualsFalse(models *model) {
 		panic("testBoolEqualsFalse: Expected value, actual nil")
 	}
 
-	if searchUser.ID != userMale.ID {
+	if searchUser.Id != userMale.Id {
 		panic("testBoolEqualsFalse: fetched object id doesnt matches. Actual:" + fmt.Sprint(searchUser))
 	}
 }
@@ -99,11 +99,11 @@ func testBoolEqualsNull(models *model) {
 		panic("testBoolEqualsOrNull: Expected value, actual nil. Res: " + fmt.Sprint(searchUsers))
 	}
 
-	if !some(searchUsers, func(value user) bool { return value.ID == userEmpty.ID }) {
+	if !some(searchUsers, func(value user) bool { return value.Id == userEmpty.Id }) {
 		panic("testBoolEqualsOrNull: expected value in list, actual: none (userEmpty)")
 	}
 
-	if !some(searchUsers, func(value user) bool { return value.ID == userMale.ID }) {
+	if !some(searchUsers, func(value user) bool { return value.Id == userMale.Id }) {
 		panic("testBoolEqualsOrNull: expected value in list, actual: none (userMale)")
 	}
 }
