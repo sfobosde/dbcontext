@@ -2,12 +2,14 @@ package dbcontext
 
 import "fmt"
 
-type LinkedObjectFieldOperands[TModel interface{}, TSearch interface{}] struct {
+// Use Tag by template: `dbcontext:"Roles:user_roles,user_id,role_id,users.id,roles.id"`
+type LinkedObjectFieldOperands struct {
 	FieldValueOperandsParams
 	JoinParams string
 }
 
-func (s *LinkedObjectFieldOperands[TModel, TSearchFields]) Has(values ...TModel) *GLobalFilter {
+// Select on joined values. values must contains "id" with string type.
+func (s *LinkedObjectFieldOperands) Has(values ...interface{}) *GLobalFilter {
 	valuesIds := make([]string, len(values))
 
 	for i, value := range values {

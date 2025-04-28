@@ -25,9 +25,8 @@ type model struct {
 // Структура пользователя.
 type user struct {
 	dbcontext.BaseEntity
-
-	Name  string `json:"name"`
-	Male  *bool  `json:"male" gorm:"default:null`
+	Name string `json:"name"`
+	Male *bool  `json:"male" gorm:"default:null`
 	Roles []role `gorm:"many2many:user_roles;"`
 }
 
@@ -42,12 +41,12 @@ type roleSearch struct {
 }
 
 type userSearch struct {
-	Id        *dbcontext.StringFieldOperands                         `dbcontext:"Id"`
-	Login     *dbcontext.StringFieldOperands                         `dbcontext:"Login"`
-	Name      *dbcontext.StringFieldOperands                         `dbcontext:"name"`
-	CreatedAt *dbcontext.DateTimeFieldOperands                       `dbcontext:"created_at"`
-	Male      *dbcontext.BooleanFieldOperands                        `dbcontext:"male"`
-	Roles     *dbcontext.LinkedObjectFieldOperands[role, roleSearch] `dbcontext:"Roles:user_roles,user_id,role_id,users.id,roles.id"`
+	Id        *dbcontext.StringFieldOperands       `dbcontext:"Id"`
+	Login     *dbcontext.StringFieldOperands       `dbcontext:"Login"`
+	Name      *dbcontext.StringFieldOperands       `dbcontext:"name"`
+	CreatedAt *dbcontext.DateTimeFieldOperands     `dbcontext:"created_at"`
+	Male      *dbcontext.BooleanFieldOperands      `dbcontext:"male"`
+	Roles     *dbcontext.LinkedObjectFieldOperands `dbcontext:"Roles:user_roles,user_id,role_id,users.id,roles.id"`
 }
 
 type userGroup struct {
