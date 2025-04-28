@@ -26,18 +26,15 @@ type model struct {
 type user struct {
 	dbcontext.BaseEntity
 
-	Name string `json:"name"`
-	Male *bool  `json:"male" gorm:"default:null`
-
-	// Roles []role `json:"roles, omitempty" gorm:"many2many:user_roles;joinForeignKey:UserID;joinReferences:RoleID"`
-	Roles []role `gorm:"many2many:user_roles;foreignKey:Id;joinForeignKey:UserID;references:Id;joinReferences:RoleID"`
+	Name  string `json:"name"`
+	Male  *bool  `json:"male" gorm:"default:null`
+	Roles []role `gorm:"many2many:user_roles;"`
 }
 
 type role struct {
 	dbcontext.BaseEntity
-	Name string `json:"name"`
-	// Users []user `json:"users, omitempty" gorm:"many2many:user_roles;joinForeignKey:RoleID;joinReferences:UserID"`
-	Users []user `gorm:"many2many:user_roles;foreignKey:Id;joinForeignKey:RoleID;references:Id;joinReferences:UserID"`
+	Name  string `json:"name"`
+	Users []user `gorm:"many2many:user_roles;"`
 }
 
 type roleSearch struct {
