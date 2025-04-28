@@ -30,7 +30,7 @@ type user struct {
 	Male *bool  `json:"male" gorm:"default:null`
 
 	// Roles []role `json:"roles, omitempty" gorm:"many2many:user_roles;joinForeignKey:UserID;joinReferences:RoleID"`
-	Roles []role `gorm:"many2many:user_roles;foreignKey:Id;joinForeignKey:UserID;references:Id;joinReferences:RoleID"`
+	Roles []role `gorm:"many2many:user_roles;"`
 }
 
 type role struct {
