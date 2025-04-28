@@ -76,9 +76,12 @@ func testOnCreateWithObjectField(models *model) {
 
 	userByFoleFound := false
 
+	var foundedUserWithRole user
+
 	for _, user := range userByRole {
 		if user.Id == userWithRole.Id {
 			userByFoleFound = true
+			foundedUserWithRole = user
 			fmt.Println("testLinkedObjectFieldOperands")
 			fmt.Println(user)
 		}
@@ -86,5 +89,16 @@ func testOnCreateWithObjectField(models *model) {
 
 	if !userByFoleFound {
 		panic("testLinkedObjectFieldOperands not found userByRole")
+	}
+
+	roleInFetchedUserFound := false
+	for _, role := range foundedUserWithRole.Roles {
+		if role.Id == userRole.Id {
+			roleInFetchedUserFound = true
+		}
+	}
+
+	if !roleInFetchedUserFound {
+		panic("testLinkedObjectFieldOperands not found role in fetched user")
 	}
 }
