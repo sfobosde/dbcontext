@@ -41,6 +41,7 @@ func testSearchAll(models *model) {
 	testSelectDefaultSize(models)
 	testCustomSize(models)
 	testEmptyAll(models)
+	testCustomOffset(models)
 }
 
 // Fetching enitities with default request size equals 10.
@@ -142,5 +143,32 @@ func testUpdate(models *model) {
 
 	if fetchedUser.Name != user.Name {
 		panic("testUpdate: Name field not match.")
+	}
+}
+
+// On custom offset of All().
+func testCustomOffset(models *model) {
+	offset := 7
+
+	i := 0
+	for i < 15 {
+		i++
+		user := create(models.Users)
+		user.Name = "testCustomOffset"
+		models.Users.Save(user)
+	}
+
+	selectedUsers, err := models.Users.Search().Where(func(operands *dbcontext.Operands, fields *userSearch) *dbcontext.GLobalFilter {
+		return operands.And(*fields.Name.Equals("testCustomOffset"))
+	}).Offset(offset).Size(15).All()
+
+	if err != nil {
+		panic("testCustomOffset:" + fmt.Sprint(err))
+	}
+
+	selectedLen := len(selectedUsers)
+
+	if selectedLen != 15-offset {
+		panic("testCustomOffset:" + "Expected 8 Objects. Actual: " + fmt.Sprint(selectedLen))
 	}
 }
